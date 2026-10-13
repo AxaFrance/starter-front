@@ -29,10 +29,22 @@
       }
 
       header {
-        background: var(--blue-1000);
-        color: #fff;
-        padding: 1.5rem 2rem;
-        font-size: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.5rem 2rem;
+        background: #fff;
+        box-shadow: 0 2px 8px rgb(0 0 143 / 12%);
+      }
+
+      header img {
+        width: 3.5rem;
+        height: 3.5rem;
+      }
+
+      header span {
+        color: var(--blue-1000);
+        font-size: 1rem;
         font-weight: 600;
       }
 
@@ -107,7 +119,10 @@
     </style>
   </head>
   <body>
-    <header>AXA</header>
+    <header>
+      <img src="logo-axa.svg" alt="AXA" />
+      <span>Starter AXA</span>
+    </header>
     <main>
       <h1>Starter AXA</h1>
       <p class="lead">Démos du starter React pour chaque thème du design system Canopée.</p>

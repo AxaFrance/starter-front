@@ -64,7 +64,7 @@ jobs:
         run: |
           for dir in _site/demo-*; do mv "$dir" "_site/${dir#_site/demo-}"; done
           cp -r _site/client/fonts _site/fonts
-          cp .github/pages/index.html .github/pages/404.html _site/
+          cp .github/pages/index.html .github/pages/404.html .github/pages/logo-axa.svg _site/
 
       - uses: actions/upload-pages-artifact@v3
         with:
