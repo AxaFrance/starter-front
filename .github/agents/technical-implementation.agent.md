@@ -1,16 +1,7 @@
 ---
 name: technical-implementation
 description: 'Agent technique generique pour implementer et valider un parcours React TypeScript a partir de specifications.'
-tools:
-  [
-    read,
-    edit,
-    search,
-    execute,
-    agent,
-    'univers-client-et-prospect/*',
-    'univers-distributeur-et-collaborateur/*',
-  ]
+tools: [read, edit, search, execute, agent]
 agents:
   [
     accessibility-expert,
@@ -42,10 +33,9 @@ implementation coherente et validee ; ne leur delegue pas la responsabilite
 de definir le fonctionnel.
 
 Avant de choisir un composant, un pattern, un layout, une navigation ou une
-variante Canopée, délègue la recherche au `design-system-expert`. Il consulte
-le bon univers Zeroheight (`univers-client-et-prospect` ou
-`univers-distributeur-et-collaborateur`) avec la séquence `search-pages`, puis
-`get-page`. N'infère pas une API à partir d'un nom ni du JSX. Après
+variante Canopée, délègue la recherche au `design-system-expert`. Il s'appuie
+sur le skill Canopée du thème et sur les types installés.
+N'infère pas une API à partir d'un nom ni du JSX. Après
 l'implémentation, le même agent peut vérifier la conformité du code.
 
 Apres l'implementation, lance en parallele des revues specialisees en lecture
@@ -130,7 +120,7 @@ Integre les constats pertinents puis relance les controles impactes.
   (`horizontal` ou `vertical`) ; ne pas appeler ces props `variant` et ne pas
   les appliquer indistinctement à tous les groupes. Reprendre l'orientation
   explicitement indiquée dans les spécifications champ par champ.
-- Vérifier les variantes dans Zeroheight et les types installés : utiliser
+- Vérifier les variantes dans le skill Canopée et les types installés : utiliser
   `<Message variant="information">` pour les messages informatifs,
   `<Message variant="neutral">` pour les messages neutres et
   `messageType="error"` pour les erreurs de champ ; ne pas inventer `info`.

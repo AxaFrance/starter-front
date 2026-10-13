@@ -71,7 +71,7 @@ Les informations générales et les éléments de la page de confirmation sont d
 | R1  | Si l'utilisateur indique être client AXA (`isclient = "oui"`), un champ facultatif de numéro de contrat s'affiche ainsi qu'un message l'incitant à contacter directement son conseiller. |
 | R2  | Le champ message doit contenir au minimum 30 caractères pour garantir une description suffisante de la demande.                                                                          |
 | R3  | Le nom (`lastname`) n'accepte que des lettres alphabétiques, y compris les accents, et refuse les chiffres et caractères spéciaux.                                                       |
-| R4  | La navigation « Précédent » à l'étape 2 est un lien (non un bouton), permettant de revenir à l'étape 1 sans validation.                                                                  |
+| R4  | La navigation « Étape précédente » à l'étape 2 est un lien (non un bouton), permettant de revenir à l'étape 1 sans validation.                                                           |
 | R5  | Les données saisies à chaque étape sont conservées pendant le parcours et consolidées à la confirmation.                                                                                 |
 | R6  | Un temps de chargement de 2 secondes est simulé avant l'affichage de la page de confirmation.                                                                                            |
 | R7  | Le choix de chaque réponse est visible immédiatement, reste unique par question et est conservé lors de la navigation entre les étapes.                                                  |

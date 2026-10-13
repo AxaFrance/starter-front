@@ -1,29 +1,34 @@
 ---
 name: 'Demarrer un parcours'
 description: 'Implementer un parcours a partir de specifications fonctionnelles.'
-argument-hint: 'Chemin vers le fichier de specifications fonctionnelles'
+argument-hint: 'Chemin vers le fichier de specifications (defaut : features/specifications.md)'
 agent: 'technical-implementation'
-model: 'GPT-5-6 Luna'
 ---
 
 ## Contexte
 
 Lis integralement le fichier d'entree des specifications fonctionnelles avant
-toute action. Le chemin de ce fichier est fourni par l'utilisateur ou identifie
-dans la configuration du projet ; ne suppose aucun nom ou arborescence de
-fichiers de specifications.
+toute action. Sans chemin fourni par l'utilisateur, utilise
+`features/specifications.md`, qui renvoie vers les autres fichiers de
+`features/`.
+
+Cette consigne s'applique quel que soit l'assistant (Copilot, Claude Code). Si
+les agents nommés ci-dessous (`technical-implementation` et spécialistes)
+n'existent pas dans l'outil utilisé, applique toi-même leurs consignes
+(lis `.github/agents/*.agent.md`) et réalise les revues en séquence, sans
+bloquer.
 
 Lis egalement l'agent technique :
 
 - [technical-implementation.agent.md](../agents/technical-implementation.agent.md)
 
 Pour une interface Canopée, délègue la revue au spécialiste Design System. Il
-consulte Zeroheight (`search-pages`, puis `get-page`) avant de valider un
-composant, une prop ou une variante.
+se base sur le skill `.github/skills/canopee-prospect-client` et sur les types
+installés avant de valider un composant, une prop ou une variante.
 
 Fais cette consultation avant de choisir les composants. Si la documentation
-ou l'API installée ne permet pas de conclure, signale le point et demande une
-clarification plutôt que de supposer.
+ou l'API installee ne permet pas de conclure, applique l'option la plus
+conforme au Design System, note-la et continue.
 
 ## Contraintes non negociables
 
@@ -42,9 +47,12 @@ Implemente le parcours decrit dans le fichier d'entree des specifications en
 respectant les conventions techniques de l'agent dedie.
 
 Avant toute modification, présente une matrice de traçabilité fonctionnelle :
-critère, fichiers cibles, test prévu et résultat observable. Si une ambiguïté
-fonctionnelle ou une contradiction des spécifications reste sans réponse,
-arrête-toi et demande une clarification avant de coder.
+critère, fichiers cibles, test prévu et résultat observable, puis enchaîne
+sans attendre de réponse. Ne t'arrête que pour une contradiction des
+spécifications qui empêche toute implémentation ; pose alors toutes les
+questions en une seule fois. Pour une simple ambiguïté, retiens l'option la
+plus conforme aux spécifications, signale-la dans le compte rendu et continue.
+Commence à écrire du code dès la matrice établie : ne prolonge pas l'analyse.
 
 ## Regles d'interaction
 
@@ -67,11 +75,12 @@ contexte sans être affichée.
 Après l'implémentation, délègue ces revues en parallèle lorsqu'elles sont
 pertinentes. Les spécialistes sont des reviewers en lecture seule : ils ne
 modifient pas le code et ne peuvent pas ajouter de comportement absent des
-spécifications.
+spécifications. Si un spécialiste ne répond pas ou est indisponible, passe
+au suivant et signale-le au compte rendu.
 
 - `accessibility-expert` : sémantique, clavier, focus, annonces et erreurs.
 - `design-system-expert` : relecture finale des APIs, composants, variantes et
-  layouts Canopée; preuve Zeroheight requise.
+  layouts Canopée; preuve issue du skill ou des types installés requise.
 - `security-expert` : flux de données, validation, données personnelles,
   liens, secrets et journalisation.
 - `playwright-e2e` : scénarios navigateur, robustesse et couverture des
