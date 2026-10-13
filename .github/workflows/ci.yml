@@ -39,6 +39,10 @@ jobs:
 
       - run: npm run lint
       - run: npm run lint:styles
+      # Les skills téléchargés par le postinstall ne sont pas formatés à la source.
+      - name: Format downloaded skills
+        run: npx prettier --config ./config/.prettierrc.json --write .github/skills
+
       - run: npm run format:check
       - run: npm test
       - run: npm run build
