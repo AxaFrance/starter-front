@@ -1,0 +1,5 @@
+main.grid {
+  --row-gap: var(--rem-64);
+
+  padding-block: var(--rem-64);
+}
