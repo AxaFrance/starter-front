@@ -1,0 +1,73 @@
+name: Deploy demos
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  HUSKY: '0'
+  AXA_KEEP_THEMES: 'true'
+
+jobs:
+  build:
+    name: Build (${{ matrix.theme }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        theme: [client, prospect, distributeur]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci --theme=${{ matrix.theme }}
+
+      - run: npm run build -- --base=/${{ github.event.repository.name }}/${{ matrix.theme }}/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: demo-${{ matrix.theme }}
+          path: dist/
+          retention-days: 1
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: demo-*
+          path: _site
+
+      - name: Assemble site
+        run: |
+          for dir in _site/demo-*; do mv "$dir" "_site/${dir#_site/demo-}"; done
+          cp .github/pages/index.html .github/pages/404.html _site/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

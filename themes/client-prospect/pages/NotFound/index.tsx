@@ -13,7 +13,7 @@ const headingProps = {
 };
 
 const linkProps = {
-  href: '/',
+  href: import.meta.env.BASE_URL,
   children: "Retour à la page d'accueil",
 };
 

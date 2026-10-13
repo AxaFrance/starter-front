@@ -7,6 +7,15 @@
     <title>starter</title>
   </head>
   <body>
+    <script>
+      // Restaure le chemin transmis par le 404.html de GitHub Pages.
+      (function () {
+        var p = new URLSearchParams(location.search).get('p');
+        if (p !== null) {
+          history.replaceState(null, '', location.pathname + p.replace(/^\/+/, '') + location.hash);
+        }
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

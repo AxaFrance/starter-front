@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirection</title>
+    <script>
+      // Pages ne gère pas le routage SPA : on renvoie vers la démo du thème avec le chemin en ?p=.
+      (function () {
+        var themes = ['client', 'prospect', 'distributeur'];
+        var parts = location.pathname.split('/');
+        var repo = parts[1];
+        var theme = parts[2];
+        if (themes.indexOf(theme) === -1) {
+          location.replace('/' + repo + '/');
+          return;
+        }
+        var rest = parts.slice(3).join('/') + location.search;
+        location.replace(
+          '/' + repo + '/' + theme + '/?p=' + encodeURIComponent(rest) + location.hash,
+        );
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
