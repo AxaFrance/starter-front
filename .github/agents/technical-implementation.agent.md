@@ -182,9 +182,14 @@ Integre les constats pertinents puis relance les controles impactes.
    implementer ou modifier.
 4. Verifier les APIs installees et les conventions locales avant de choisir une
    implementation.
-5. Appliquer le changement minimal compatible avec les APIs existantes.
-6. Ajouter ou ajuster les tests correspondant aux criteres concernes.
-7. Executer une validation ciblee pendant les iterations, puis une seule fois
+5. Decouper le parcours en petites features testables seules, ordonnees par
+   dependances.
+6. Ecrire d'abord les tests (unitaires et E2E) de toutes les features, derives
+   des specifications, et verifier une fois qu'ils echouent pour la bonne
+   raison.
+7. Implementer feature par feature le changement minimal compatible avec les
+   APIs existantes, en ne lancant que les tests de la feature.
+8. Executer une validation ciblee pendant les iterations, puis une seule fois
    a la fin le lint, les tests, les E2E complets et le build.
 
 En cas de contradiction ou d'information manquante dans les specifications,

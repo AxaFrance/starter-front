@@ -37,22 +37,70 @@ conforme au Design System, note-la et continue.
 - Pas de dossier `src/features` : une page = un dossier
   `src/pages/<NomPage>/` (`index.tsx`, `route.tsx`, `__tests__/`) ; l'etat
   partage du parcours vit dans le dossier de la page parente.
-- Boucles bornees : une vague de revues, deux cycles de correction maximum,
-  tests cibles et `--project=chromium` pendant les iterations, suite complete
-  et build une seule fois a la fin.
+- Boucles bornees : voir "Anti-boucle" ci-dessous ; tests cibles et
+  `--project=chromium` pendant les phases 2 et 3, suite complete et build une
+  seule fois a la fin.
+
+## Anti-boucle (priorite absolue)
+
+- Reflechis court : decide, ecris, execute. Ne reanalyse pas un point deja
+  tranche, ne relis pas un fichier deja lu, ne reexplore pas le depot.
+- Hesitation entre deux options : retiens la plus conforme aux specifications
+  et au skill Canopee, note-la en une ligne et continue.
+- Chaque phase produit un artefact concret (tableau, fichiers de tests, code)
+  avant toute nouvelle reflexion. Si tu raisonnes sans ecrire de fichier,
+  ecris immediatement ce que tu as deja decide.
+- Annonce en une ligne le debut et la fin de chaque phase.
+- Si tu es bloque, arrete-toi et rapporte le point : ne tourne pas en rond.
 
 ## Mission
 
 Implemente le parcours decrit dans le fichier d'entree des specifications en
-respectant les conventions techniques de l'agent dedie.
+respectant les conventions techniques de l'agent dedie, en 4 phases strictes :
+decoupage, tests, developpement, revues et gates. Ne passe a la phase suivante
+qu'une fois le livrable de la phase en cours produit, et ne reviens pas en
+arriere.
 
-Avant toute modification, présente une matrice de traçabilité fonctionnelle :
-critère, fichiers cibles, test prévu et résultat observable, puis enchaîne
-sans attendre de réponse. Ne t'arrête que pour une contradiction des
-spécifications qui empêche toute implémentation ; pose alors toutes les
-questions en une seule fois. Pour une simple ambiguïté, retiens l'option la
-plus conforme aux spécifications, signale-la dans le compte rendu et continue.
-Commence à écrire du code dès la matrice établie : ne prolonge pas l'analyse.
+### Phase 1 - Decoupage en petites features (aucun code)
+
+Lis les specifications une seule fois. Decoupe-les en petites features (3 a 8
+environ), chacune testable seule : une page ou un comportement transverse
+(socle routes/menu/404, etat partage, une etape, la confirmation...), ordonnees
+selon leurs dependances.
+
+Livrable : un tableau avec, par feature, le numero, le nom, les criteres
+couverts (identifiants F/R des specifications), les fichiers cibles, les tests
+prevus (unitaire / e2e) et le resultat observable. Enchaine ensuite sans
+attendre de reponse. Ne t'arrete que pour une contradiction des specifications
+qui empeche toute implementation ; pose alors toutes les questions en une
+seule fois. Pour une simple ambiguite, applique la regle "hesitation" et
+signale-la au compte rendu.
+
+### Phase 2 - Ecriture des tests (avant tout code)
+
+Pour toutes les features, ecris les tests avant de coder :
+
+- unitaires (Vitest) dans `src/pages/<NomPage>/__tests__/` pour la logique
+  pure : schemas, regles metier R\*, etats locaux ;
+- e2e (Playwright) dans `e2e/<Parcours>/` pour les comportements visibles :
+  routes, navigation, validation, chargement, liens.
+
+Les tests derivent uniquement des specifications. Lance-les une seule fois pour
+verifier qu'ils sont collectes et qu'ils echouent parce que la fonctionnalite
+est absente (et non a cause d'une erreur d'import ou de syntaxe). Un seul
+correctif de test est autorise a ce stade.
+
+### Phase 3 - Developpement feature par feature
+
+Pour chaque feature dans l'ordre : implemente le minimum necessaire pour faire
+passer ses tests, puis lance uniquement ses tests (unitaires et e2e
+`--project=chromium`). En cas d'echec, deux corrections maximum ; ensuite
+marque la feature `KO`, note la cause et passe a la suivante. Ne modifie pas un
+test pour le faire passer, sauf s'il contredit les specifications (a signaler).
+
+### Phase 4 - Revues et gates
+
+Applique les sections "Revues specialisees" puis "Harness de validation".
 
 ## Regles d'interaction
 
@@ -109,6 +157,7 @@ Consigne chaque commande et son résultat. Si une commande est indisponible ou
 
 ## Compte rendu
 
-Indique les fichiers créés/modifiés, la matrice critère-test-résultat, les
-verdicts des spécialistes, les commandes exécutées et leurs résultats, puis les
+Indique les fichiers créés/modifiés, le tableau des features avec leur statut
+(`OK` ou `KO` et cause), la matrice critère-test-résultat, les verdicts des
+spécialistes, les commandes exécutées et leurs résultats, puis les
 ambiguïtés ou risques restants.
