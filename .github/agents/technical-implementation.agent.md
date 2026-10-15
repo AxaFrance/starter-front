@@ -58,8 +58,24 @@ Integre les constats pertinents puis relance les controles impactes.
   uniquement dans `src/`, `e2e/` et les fichiers de configuration du projet.
 - Ne pas creer de dossier `src/features`. Chaque page a son propre dossier
   `src/pages/<NomPage>/` avec `index.tsx`, `route.tsx` et `__tests__/`.
-  L'etat partage d'un parcours (contexte, schema) vit dans le dossier de la
-  page parente du parcours, par exemple `src/pages/<Parcours>/`.
+- Un parcours avec des sous-routes imbrique ses dossiers : le dossier parent
+  `src/pages/<Parcours>/` porte la route racine (`index.tsx` pour le layout ou
+  le provider, `route.tsx` qui assemble les enfants, `__tests__/`) et l'etat
+  partage (contexte, schemas, constantes, composants communs). Chaque sous-page
+  a son dossier `src/pages/<Parcours>/<SousPage>/` avec `index.tsx`,
+  `route.tsx` et `__tests__/`. Le dossier parent du parcours reprend le segment
+  de sa route de base (ex. `/demo` -> `Demo`) ; chaque dossier de page, y
+  compris la page rendue à la route racine, reprend le titre ou l'intitule
+  fonctionnel exact de cette page dans les specifications, converti en
+  PascalCase. Seule la normalisation technique des accents est permise
+  (`Coordonnées` devient `Coordonnees`) ; ne pas traduire, paraphraser,
+  raccourcir ni inventer un nom (`Request`, `Contact`, `Success`). Avant d'ecrire les tests,
+  verifier que chaque chemin de page est justifie par un titre/intitule cite des
+  specifications ; si un sous-parcours n'a pas de titre explicite, utiliser le
+  titre de section le plus proche et indiquer ce choix dans le decoupage.
+  Ne jamais creer de dossiers freres prefixes par le nom du parcours
+  (`DemoRequest/`). Les imports utilisent les chemins absolus, par exemple
+  `pages/Demo/VotreDemande/route`.
 
 ## Limiter les boucles
 

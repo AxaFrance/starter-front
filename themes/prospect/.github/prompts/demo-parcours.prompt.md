@@ -35,8 +35,19 @@ conforme au Design System, note-la et continue.
 - Ne jamais modifier les specifications : elles sont en lecture seule.
 - Le theme est deja installe : ne pas lire ni modifier `themes/`.
 - Pas de dossier `src/features` : une page = un dossier
-  `src/pages/<NomPage>/` (`index.tsx`, `route.tsx`, `__tests__/`) ; l'etat
-  partage du parcours vit dans le dossier de la page parente.
+  `src/pages/<NomPage>/` (`index.tsx`, `route.tsx`, `__tests__/`). Un parcours
+  avec sous-routes imbrique ses dossiers : `src/pages/<Parcours>/` (route
+  racine, etat partage, contexte, schemas) et `src/pages/<Parcours>/<SousPage>/`
+  par sous-page, y compris la page de la route racine. Le dossier parent reprend
+  le segment de route de base (`/demo` -> `Demo`) ; chaque dossier de page
+  reprend le titre ou l'intitule fonctionnel exact de cette page dans les specs,
+  converti en PascalCase.
+  Seule la normalisation des accents est permise (`Coordonnées` ->
+  `Coordonnees`) : aucune traduction, paraphrase, abréviation ou nom inventé
+  (`Request`, `Contact`, `Success`). Avant les tests, chaque chemin doit être
+  justifié par un intitulé source des specs. Si aucun titre explicite n'existe,
+  utiliser le titre de section le plus proche et noter ce choix dans le
+  découpage. Jamais de dossiers frères préfixés (`DemoRequest/`).
 - Boucles bornees : voir "Anti-boucle" ci-dessous ; tests cibles et
   `--project=chromium` pendant les phases 2 et 3, suite complete et build une
   seule fois a la fin.
@@ -70,8 +81,13 @@ selon leurs dependances.
 
 Livrable : un tableau avec, par feature, le numero, le nom, les criteres
 couverts (identifiants F/R des specifications), les fichiers cibles, les tests
-prevus (unitaire / e2e) et le resultat observable. Enchaine ensuite sans
-attendre de reponse. Ne t'arrete que pour une contradiction des specifications
+prevus (unitaire / e2e) et le resultat observable. Pour chaque page, ajoute
+egalement la route, le titre/intitule exact repris des specs et le chemin de
+dossier PascalCase correspondant (ex. `/demo` + « Votre demande » ->
+`Demo/VotreDemande/`). Refuse les noms qui ne peuvent pas etre
+relies a un terme source explicite. Verifie que les chemins des tests suivent
+ces dossiers avant de passer a la phase 2. Enchaine ensuite sans attendre de
+reponse. Ne t'arrete que pour une contradiction des specifications
 qui empeche toute implementation ; pose alors toutes les questions en une
 seule fois. Pour une simple ambiguite, applique la regle "hesitation" et
 signale-la au compte rendu.
@@ -80,7 +96,9 @@ signale-la au compte rendu.
 
 Pour toutes les features, ecris les tests avant de coder :
 
-- unitaires (Vitest) dans `src/pages/<NomPage>/__tests__/` pour la logique
+- unitaires (Vitest) dans le `__tests__/` du dossier concerne, par exemple
+  `src/pages/<Parcours>/<SousPage>/__tests__/` ou
+  `src/pages/<Parcours>/__tests__/` pour l'etat partage, pour la logique
   pure : schemas, regles metier R\*, etats locaux ;
 - e2e (Playwright) dans `e2e/<Parcours>/` pour les comportements visibles :
   routes, navigation, validation, chargement, liens.
