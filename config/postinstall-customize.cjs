@@ -63,17 +63,33 @@ function removePostinstallScript(packagePath) {
   fs.writeFileSync(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
 }
 
+function removePagesFallbackScript(indexPath) {
+  const html = fs.readFileSync(indexPath, 'utf8');
+  const scriptPattern =
+    /(^|\n)[ \t]*<script>\s*\/\/ Restaure le chemin transmis par le 404\.html de GitHub Pages\.[\s\S]*?<\/script>\r?\n/;
+
+  fs.writeFileSync(indexPath, html.replace(scriptPattern, '$1'));
+}
+
 function finalizeGeneratedProject(repoRoot) {
   const themesPath = path.join(repoRoot, 'themes');
   const packagePath = path.join(repoRoot, 'package.json');
   const plopfilePath = path.join(repoRoot, 'config', 'plopfile.cjs');
   const postinstallPath = path.join(repoRoot, 'config', 'postinstall-customize.cjs');
+  const gitPath = path.join(repoRoot, '.git');
+  const workflowsPath = path.join(repoRoot, '.github', 'workflows');
+  const pagesPath = path.join(repoRoot, '.github', 'pages');
+  const indexPath = path.join(repoRoot, 'index.html');
 
   fs.rmSync(themesPath, { recursive: true, force: true });
+  fs.rmSync(gitPath, { recursive: true, force: true });
+  fs.rmSync(workflowsPath, { recursive: true, force: true });
+  fs.rmSync(pagesPath, { recursive: true, force: true });
+  removePagesFallbackScript(indexPath);
   removePostinstallScript(packagePath);
   fs.rmSync(plopfilePath, { force: true });
   fs.rmSync(postinstallPath, { force: true });
-  console.log('Templates et scripts de scaffolding/postinstallation supprimes.');
+  console.log('Metadonnees Git, templates et fichiers internes au starter supprimes.');
 }
 
 function replaceProjectReadme(repoRoot, theme) {

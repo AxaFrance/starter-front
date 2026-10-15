@@ -24,7 +24,7 @@
     "update:skills": "node ./config/update-skills.cjs",
     "postinstall": "node ./config/postinstall-customize.cjs",
     "prepare": "husky",
-    "install:themes": "AXA_KEEP_THEMES=true npm install"
+    "install:contrib": "AXA_KEEP_THEMES=true npm install"
   },
   "lint-staged": {
     "*.{js,cjs,mjs,ts,tsx,css,scss,md,json,yml,yaml,html}": [

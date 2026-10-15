@@ -48,12 +48,13 @@ Lors d'une generation de parcours, l'agent `technical-implementation` ne modifie
 - `npm run e2e:ui` : lance Playwright avec l'interface interactive.
 - `npm run e2e:debug` : lance Playwright en mode debug.
 - `npm run scaffold` : lance Plop pour personnaliser les fichiers templates (mode contributeur uniquement).
+- `npm run install:contrib` : installe les dépendances en conservant les thèmes et scripts du starter.
 - `npm run verify:skills` : affiche les skills locaux installes dans `.github/skills`.
 - `npm run update:skills` : met a jour les skills installes depuis le dernier commit du repo Canopée.
 
 ## Personnalisation
 
-Le script `postinstall` lance la personnalisation uniquement quand le marqueur `.initialized` est present. Apres une personnalisation reussie, l'installation standard remplace ce README par la version allegee du theme, puis supprime `themes/` ainsi que les scripts internes de scaffolding et de postinstallation (`config/plopfile.cjs`, le hook `postinstall` et `config/postinstall-customize.cjs`).
+Le script `postinstall` lance la personnalisation uniquement quand le marqueur `.initialized` est present. Apres une personnalisation reussie, l'installation standard remplace ce README par la version allegee du theme, puis supprime `.git/`, `themes/`, `.github/workflows/`, `.github/pages/`, le script de fallback Pages dans `index.html` ainsi que les scripts internes de scaffolding et de postinstallation (`config/plopfile.cjs`, le hook `postinstall` et `config/postinstall-customize.cjs`). Le mode contributeur conserve ces fichiers.
 
 Si aucun theme n'est fourni, `npm install` laisse Plop demander le theme a appliquer dans le terminal.
 
@@ -75,7 +76,7 @@ Le marqueur `.initialized` n'est supprime qu'apres une personnalisation reussie.
 La conservation des templates et des scripts de postinstallation est utile uniquement lorsque vous contribuez a ce starter (modification des templates, des tests E2E ou du scaffolding). Activez-la avec:
 
 ```bash
-AXA_KEEP_THEMES=true npm install --theme=client
+npm run install:contrib -- --theme=client
 ```
 
 L'equivalent npm est `npm install --keep-themes --theme=client`.
